@@ -5,17 +5,7 @@ module.exports = {
   mode: "production",
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin({
-      parallel: false,
-      terserOptions: {
-        ecma: 5,
-        compress: true,
-        output: {
-          comments: false,
-          beautify: false
-        }
-      }
-    })],
+    minimizer: [new TerserPlugin()],
   },
   entry: path.resolve(__dirname, './src/main.ts'),
   experiments: {
@@ -40,6 +30,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
+    publicPath: '',
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },

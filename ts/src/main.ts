@@ -1,18 +1,18 @@
 import { OpenAIChat } from "langchain/llms/openai";
-import { ConversationalRetrievalQAChain } from "langchain/chains";
-import { HNSWLib } from "langchain/vectorstores/hnswlib";
+import { ChatVectorDBQAChain } from "langchain/chains";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 const f = async () => {
-  const model = new OpenAIChat();
+  const model = new OpenAIChat({openAIApiKey: ""});
   const text = "pretend openapi blah blah blah blah";
   const textSplitter = new RecursiveCharacterTextSplitter({ chunkSize: 1000 });
   const docs = await textSplitter.createDocuments([text]);
-  const vectorStore = await HNSWLib.fromDocuments(docs, new OpenAIEmbeddings());
-  const chain = ConversationalRetrievalQAChain.fromLLM(
+  const vectorStore = await MemoryVectorStore.fromDocuments(docs, new OpenAIEmbeddings({openAIApiKey: "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"}));
+  const chain = ChatVectorDBQAChain.fromLLM(
     model,
-    vectorStore.asRetriever()
+    vectorStore,
   );
 
   
